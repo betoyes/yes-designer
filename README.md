@@ -1,90 +1,49 @@
-# Carrossel Pro — Marketplace
+# Carrossel Pro
 
-Marketplace de plugin pro **Claude Cowork / Claude Code** que distribui o plugin **carrossel-pro** (habilidade de carrosseis + editor visual Carousel Studio) com **atualizacao automatica** via GitHub.
-
----
-
-## 1. Publicar no GitHub (uma vez)
-
-Pre-requisitos: ter o `git` instalado e uma conta no GitHub.
-
-1. Crie um repositorio novo no GitHub chamado `carrossel-pro-marketplace` (pode ser **publico**).
-2. No seu computador, dentro desta pasta, rode:
-
-```bash
-git init
-git add .
-git commit -m "carrossel-pro marketplace v1.6.0"
-git branch -M main
-git remote add origin https://github.com/SEU-USUARIO/carrossel-pro-marketplace.git
-git push -u origin main
-```
-
-Troque `SEU-USUARIO` pelo seu usuario do GitHub. Pronto - o marketplace esta no ar.
-
-> Dica: edite tambem o campo `homepage` em `.claude-plugin/marketplace.json` trocando `SEU-USUARIO`.
+Marketplace de plugin pro **Claude Cowork / Claude Code**. Instala a habilidade **carrossel-pro**, que cria carrosseis de Instagram prontos pra publicar e entrega um **editor visual** (Carousel Studio) ja preenchido com o carrossel gerado — pra ajustar textos, tipografia, cores, imagem de fundo, cantos e exportar os PNGs em ZIP.
 
 ---
 
-## 2. Como outra pessoa instala
+## Instalar
 
-### No Claude Cowork (app desktop)
-1. Va em **Configuracoes -> Plugins** (ou no marketplace de plugins do Cowork).
-2. **Add plugin / Adicionar marketplace** -> fonte **GitHub** -> informe `SEU-USUARIO/carrossel-pro-marketplace`.
+### Claude Cowork (app desktop)
+1. Configuracoes -> Plugins -> **Adicionar marketplace**.
+2. Fonte **GitHub** -> informe: `NetoNetoArreche/carrossel-pro-marketplace`
 3. Instale o plugin **carrossel-pro** no catalogo.
 
-### No Claude Code (terminal)
+### Claude Code (terminal)
 ```bash
-/plugin marketplace add SEU-USUARIO/carrossel-pro-marketplace
+/plugin marketplace add NetoNetoArreche/carrossel-pro-marketplace
 /plugin install carrossel-pro@carrossel-pro-marketplace
 ```
 
-Depois de instalar, e so pedir: **"cria um carrossel sobre X"** - a habilidade conduz tudo e entrega o `carrossel-editor.html` ja preenchido, pronto pra ajustar e exportar os PNGs em ZIP.
+## Usar
+
+Depois de instalar, peca: **"cria um carrossel sobre X"**. A habilidade conduz as perguntas, escreve a copy e entrega o `carrossel-editor.html` ja preenchido. Abra no navegador, ajuste e clique em **Exportar ZIP**.
 
 ---
 
-## 3. Atualizacao automatica
+## Para o mantenedor (atualizar o plugin)
 
-Sempre que voce melhorar o plugin:
-
-1. Edite os arquivos em `plugins/carrossel-pro/` (ex.: o `carousel-studio.html` ou a `SKILL.md`).
-2. **Suba a versao** em dois lugares (use o mesmo numero):
-   - `plugins/carrossel-pro/.claude-plugin/plugin.json` -> campo `version`
-   - `.claude-plugin/marketplace.json` -> `version` do plugin
-3. Faca commit e push **automaticamente** com o script incluido:
+Edite o que quiser em `plugins/carrossel-pro/` (ex.: `carousel-studio.html` ou `skills/carrossel-pro/SKILL.md`) e rode:
 
 ```bash
 ./atualizar.sh          # sobe o patch (1.6.0 -> 1.6.1) e da push
 ./atualizar.sh minor    # 1.6.0 -> 1.7.0
-./atualizar.sh 2.0.0    # define a versao exata
+./atualizar.sh 2.0.0    # versao exata
 ```
 
-O script atualiza a versao nos dois arquivos, faz commit e push sozinho.
-(No Windows, rode pelo Git Bash. Se precisar: `chmod +x atualizar.sh`.)
+O script atualiza a versao no `plugin.json` e no `marketplace.json`, faz commit e push. Quem ja instalou recebe a atualizacao ao atualizar o marketplace (Cowork: refresh; Claude Code: `/plugin marketplace update`).
 
-Quem ja instalou recebe a atualizacao ao **atualizar o marketplace**:
-- **Cowork:** botao de atualizar/refresh do marketplace nas configuracoes de plugins.
-- **Claude Code:** `/plugin marketplace update`
-
-Em planos **Team/Enterprise**, o owner pode definir o plugin como **auto-instalavel** pra toda a organizacao (Admin -> Plugins), e ai ele e adicionado e atualizado automaticamente pra todos.
-
----
-
-## Estrutura do repositorio
+## Estrutura
 
 ```
 carrossel-pro-marketplace/
-├── .claude-plugin/
-│   └── marketplace.json          # catalogo (lista os plugins)
-├── plugins/
-│   └── carrossel-pro/            # o plugin (habilidade + editor)
-│       ├── .claude-plugin/plugin.json
-│       ├── carousel-studio.html  # editor visual
-│       ├── README.md
-│       └── skills/carrossel-pro/ # SKILL.md + referencias + kits
-└── README.md                     # este guia
+├── .claude-plugin/marketplace.json   # catalogo
+├── plugins/carrossel-pro/            # o plugin (habilidade + editor)
+├── atualizar.sh                      # sobe versao e publica
+└── README.md
 ```
 
 ## Licenca
-
 MIT.
