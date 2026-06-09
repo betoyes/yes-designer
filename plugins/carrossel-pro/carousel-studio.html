@@ -250,13 +250,22 @@ const $ = s => document.querySelector(s);
 function esc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;');}
 function dims(){return FORMATS[data.formato]||FORMATS["4:5"];}
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),1900);}
-function fxDefaults(){
+const SF={
+  capa:{tcls:'h1',scls:'sub',tkey:'titulo',skey:'sub',tSize:120,sSize:40,tSpace:-0.02,lh:1.0},
+  passo:{tcls:'h2',scls:'body',tkey:'titulo',skey:'corpo',tSize:84,sSize:42,tSpace:-0.01,lh:1.04},
+  insight:{tcls:'quote',scls:'source',tkey:'texto',skey:'fonte',tSize:76,sSize:30,tSpace:0,lh:1.15},
+  lista:{tcls:'h2',scls:null,tkey:'titulo',skey:null,tSize:84,sSize:44,tSpace:-0.01,lh:1.04},
+  stat:{tcls:'stat',scls:'body',tkey:'numero',skey:'corpo',tSize:280,sSize:42,tSpace:0,lh:0.9},
+  cta:{tcls:'cta',scls:'sub',tkey:'titulo',skey:'sub',tSize:96,sSize:40,tSpace:0,lh:1.02}
+};
+function fxDefaults(s){
   const K=KITS[data.kit]||KITS.editorial;
+  const f=SF[(s&&s.tipo)]||SF.capa;
   return {vpos:'inf',hpos:'esq',align:'esq',glass:false,card:false,badge:false,scale:100,gap:28,
-    tSize:120,tFont:K.disp,tWeight:800,tColor:'',tSpace:-0.02,
-    sSize:40,sFont:K.body,sWeight:400,sColor:'',sSpace:0,lh:1.0};
+    tSize:f.tSize,tFont:K.disp,tWeight:800,tColor:'',tSpace:f.tSpace,
+    sSize:f.sSize,sFont:K.body,sWeight:400,sColor:'',sSpace:0,lh:f.lh};
 }
-function ensureFx(s){ if(!s.fx) s.fx=fxDefaults(); return s.fx; }
+function ensureFx(s){ if(!s.fx) s.fx=fxDefaults(s); return s.fx; }
 function applyFonts(){
   const k = KITS[data.kit] || KITS["editorial"];
   let link = document.getElementById('gfont');
@@ -279,22 +288,23 @@ function slideInner(s, idx, total){
   let c='';
   switch(s.tipo){
     case 'capa': c=`<div class="content"><div class="kicker">${esc(s.kicker)}</div><div class="h1">${hlText(s.titulo,s.hlT)}</div>${s.sub?`<div class="sub">${hlText(s.sub,s.hlS)}</div>`:''}</div>`;break;
-    case 'passo': c=`<div class="content"><div class="rule"></div><div class="h2">${esc(s.titulo)}</div>${s.corpo?`<div class="body">${esc(s.corpo)}</div>`:''}</div>`;break;
-    case 'insight': c=`<div class="content"><div class="rule"></div><div class="quote">${esc(s.texto)}</div>${s.fonte?`<div class="source">${esc(s.fonte)}</div>`:''}</div>`;break;
-    case 'lista': c=`<div class="content"><div class="h2">${esc(s.titulo)}</div><ul class="itens">${(s.itens||[]).map(it=>`<li>${esc(it)}</li>`).join('')}</ul></div>`;break;
-    case 'stat': c=`<div class="content"><div class="stat">${esc(s.numero)}</div><div class="rotulo">${esc(s.rotulo)}</div>${s.corpo?`<div class="body">${esc(s.corpo)}</div>`:''}</div>`;break;
-    case 'cta': c=`<div class="content"><div class="cta">${esc(s.titulo)}</div>${s.sub?`<div class="sub">${esc(s.sub)}</div>`:''}${s.acao?`<div class="acao">${esc(s.acao)}</div>`:''}</div>`;break;
+    case 'passo': c=`<div class="content"><div class="rule"></div><div class="h2">${hlText(s.titulo,s.hlT)}</div>${s.corpo?`<div class="body">${hlText(s.corpo,s.hlS)}</div>`:''}</div>`;break;
+    case 'insight': c=`<div class="content"><div class="rule"></div><div class="quote">${hlText(s.texto,s.hlT)}</div>${s.fonte?`<div class="source">${hlText(s.fonte,s.hlS)}</div>`:''}</div>`;break;
+    case 'lista': c=`<div class="content"><div class="h2">${hlText(s.titulo,s.hlT)}</div><ul class="itens">${(s.itens||[]).map(it=>`<li>${esc(it)}</li>`).join('')}</ul></div>`;break;
+    case 'stat': c=`<div class="content"><div class="stat">${hlText(s.numero,s.hlT)}</div><div class="rotulo">${esc(s.rotulo)}</div>${s.corpo?`<div class="body">${hlText(s.corpo,s.hlS)}</div>`:''}</div>`;break;
+    case 'cta': c=`<div class="content"><div class="cta">${hlText(s.titulo,s.hlT)}</div>${s.sub?`<div class="sub">${hlText(s.sub,s.hlS)}</div>`:''}${s.acao?`<div class="acao">${esc(s.acao)}</div>`:''}</div>`;break;
     default: c=`<div class="content"><div class="body">tipo "${esc(s.tipo)}"</div></div>`;
   }
   return ghostHtml+shade+c;
 }
-function styleCapa(el2, s){
+function styleSlide(el2, s){
   const fx=ensureFx(s);
+  const f=SF[s.tipo]||SF.capa;
   const VM={sup:'flex-start',meio:'center',inf:'flex-end'};
   const HM={esq:'flex-start',centro:'center',dir:'flex-end'};
   const TA={esq:'left',centro:'center',dir:'right'};
   el2.style.justifyContent=VM[fx.vpos]||'flex-end'; el2.style.alignItems=HM[fx.hpos]||'flex-start';
-  const content=el2.querySelector('.content'), h1=el2.querySelector('.h1'), sub=el2.querySelector('.sub'), kicker=el2.querySelector('.kicker');
+  const content=el2.querySelector('.content'), h1=el2.querySelector('.'+f.tcls), sub=f.scls?el2.querySelector('.'+f.scls):null, kicker=el2.querySelector('.kicker');
   const sc=(fx.scale||100)/100;
   if(content){content.style.textAlign=TA[fx.align]||'left';content.style.maxWidth='92%';}
   if(kicker){ kicker.style.marginBottom=(fx.gap*sc)+'px';
@@ -316,7 +326,7 @@ function buildSlide(s, idx, total){
   if(s.bgColor)e.style.backgroundColor=s.bgColor;
   e.innerHTML=slideInner(s,idx,total);
   applyBg(e,s,idx,total);
-  if(s.tipo==='capa') styleCapa(e,s);
+  styleSlide(e,s);
   decorate(e,s,idx,total);
   return e;
 }
@@ -479,8 +489,9 @@ function wordHighlightPanel(insp,s,upd){
       wrap.appendChild(c);});
     box.appendChild(wrap);
   }
-  chips('Título',s.titulo,'hlT');
-  chips('Subtítulo',s.sub,'hlS');
+  const f=SF[s.tipo]||SF.capa;
+  chips('Texto principal',s[f.tkey],'hlT');
+  if(f.skey) chips('Texto secundário',s[f.skey],'hlS');
   box.appendChild(el('div','hint','Clique numa palavra pra realçá-la na cor de acento.'));
   box.appendChild(el('div','divider'));
   const a1=el('button','btn','<svg class="uimi" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>Aplicar configurações no próximo slide');a1.style.width='100%';
@@ -680,8 +691,6 @@ function renderInspector(){
     insp.appendChild(field('Kicker (rótulo)',s.kicker,set('kicker')));
     insp.appendChild(field('Título',s.titulo,set('titulo'),'',true));
     insp.appendChild(field('Subtítulo',s.sub,set('sub'),'',true));
-    capaStylePanel(insp,s,upd);
-    wordHighlightPanel(insp,s,upd);
   } else if(s.tipo==='passo'){
     insp.appendChild(field('Título',s.titulo,set('titulo'),'',true));
     insp.appendChild(field('Corpo',s.corpo,set('corpo'),'',true));
@@ -700,6 +709,8 @@ function renderInspector(){
     insp.appendChild(field('Botão (ação)',s.acao,set('acao')));
     insp.appendChild(field('Subtítulo',s.sub,set('sub'),'',true));
   }
+  capaStylePanel(insp,s,upd);
+  wordHighlightPanel(insp,s,upd);
   if(s.tipo!=='cta'){ insp.appendChild(chk('Mostrar número gigante de fundo', !!s.ghost, v=>{s.ghost=v?String(current+1).padStart(2,'0'):undefined;upd();})); }
   if(s.tipo!=='capa'&&s.tipo!=='cta'){ insp.appendChild(chk('Slide de respiro (fundo claro)', !!s.breather, v=>{s.breather=v||undefined;upd();})); }
   insp.appendChild(el('div','divider'));
@@ -731,7 +742,7 @@ function capaStylePanel(insp,s,upd){
   box.appendChild(slider('Escala global',50,150,1,fx.scale,v=>v+'%',v=>{fx.scale=v;upd();}));
   box.appendChild(slider('Espaço entre label/título/subtítulo',0,80,1,fx.gap,v=>v+'px',v=>{fx.gap=v;upd();}));
   box.appendChild(el('div','divider'));
-  box.appendChild(slider('Título',40,200,1,fx.tSize,v=>v+'px',v=>{fx.tSize=v;upd();}));
+  box.appendChild(slider('Título',40,320,1,fx.tSize,v=>v+'px',v=>{fx.tSize=v;upd();}));
   box.appendChild(glabel('Fonte do título'));box.appendChild(fontSelect(fx.tFont,v=>{fx.tFont=v;upd();}));
   box.appendChild(glabel('Peso da fonte'));box.appendChild(weightBtns(fx.tWeight,v=>{fx.tWeight=v;upd();renderInspector();}));
   box.appendChild(glabel('Cor do título'));box.appendChild(swatches(fx.tColor,v=>{fx.tColor=v;upd();renderInspector();}));
