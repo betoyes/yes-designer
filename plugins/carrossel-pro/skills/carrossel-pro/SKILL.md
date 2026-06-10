@@ -150,6 +150,9 @@ Se a pergunta não estiver na base, use conhecimento geral, mas sinalize "(não 
 
 ## Casos especiais
 
+- Quer estilo **card / tweet** (notícia, anúncio, lançamento) -> use os tipos `tweet` (card de post) e `nota` (card de aviso). Detalhes em `references/05-template-html.md`.
+
+
 - "Já fiz isso antes, meu sistema é X" → `@reusar`: pula Fases 1-3.
 - Tem brand book pronto → use como base, pula Fases 1-3.
 - Não sabe o tipo de carrossel → mostre os 6 tipos da base com exemplos.

@@ -36,3 +36,18 @@ tpl = tpl.replace('<script id="deck-data" type="application/json"></script>',
 open(PASTA_SAIDA + "/carrossel-editor.html", "w", encoding="utf-8").write(tpl)
 ```
 Apresente o `carrossel-editor.html`. Tudo (edição, fontes, cores, posicionamento, imagem de fundo, cantos, logo e **Exportar ZIP**) acontece dentro dele. NÃO use `build_carrossel.py` nem `editor_template.html` — foram removidos.
+
+## Tipos de card (estilo notícia/anúncio)
+- `tweet`: card de post/rede social.
+  ```json
+  { "tipo":"tweet", "titulo":"Headline opcional", "sub":"linha opcional",
+    "autor":"Claude", "handle":"@claudeai", "verificado":true,
+    "texto":"Texto do post. Use **palavra** pra realçar.",
+    "img":"(opcional)", "likes":"1,8k", "rts":"205", "replies":"96", "views":"1,7M" }
+  ```
+- `nota`: card de aviso/nota.
+  ```json
+  { "tipo":"nota", "titulo":"Headline opcional",
+    "icone":"lock|shield|info|alert|star|check|sparkles",
+    "cardTitulo":"Título do card", "cardTexto":"Texto do card." }
+  ```
