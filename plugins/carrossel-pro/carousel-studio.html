@@ -72,6 +72,12 @@ header .grow{flex:1;}
 .rail{background:#101015;border-right:1px solid #23232b;overflow-y:auto;padding:14px 10px 14px 14px;scrollbar-gutter:stable;}
 .thumb{position:relative;width:128px;height:160px;border-radius:8px;overflow:hidden;border:2px solid transparent;cursor:pointer;margin:0 auto 12px;background:#000;}
 .thumb.active{border-color:#6C5CE7;}
+.thumb{cursor:grab;}
+.thumb:active{cursor:grabbing;}
+.thumb.dragging{opacity:.35;}
+.thumb.drop-before{box-shadow:0 -3px 0 0 #6C5CE7;}
+.thumb.drop-after{box-shadow:0 3px 0 0 #6C5CE7;}
+.thumb .draghandle{position:absolute;top:4px;right:6px;z-index:6;color:#fff;opacity:.55;pointer-events:none;}
 .thumb .scaler{position:absolute;top:0;left:0;transform-origin:top left;}
 .thumb .tnum{position:absolute;top:4px;left:6px;font-size:11px;font-weight:700;color:#fff;background:rgba(0,0,0,.5);padding:1px 6px;border-radius:5px;z-index:5;}
 .stage{display:flex;align-items:center;justify-content:center;overflow:auto;padding:24px;background:#1b1b22;background-image:radial-gradient(#26262f 1px,transparent 1px);background-size:22px 22px;}
@@ -185,6 +191,48 @@ input[type=range]{width:100%;accent-color:#6C5CE7;height:18px;cursor:pointer;}
 .tweetcard.dark .tw-handle,.tweetcard.dark .tw-metrics{color:#8b98a5;}
 .notacard.dark .nota-tt{color:#fff;}
 .notacard.dark .nota-tx{color:#e8e8e8;}
+
+/* ===== Autosave indicator ===== */
+.savestat{font-size:11.5px;color:#71717e;display:inline-flex;align-items:center;gap:6px;font-weight:600;}
+.savestat .dot{width:8px;height:8px;border-radius:50%;background:#3ecf8e;}
+.savestat.saving .dot{background:#e2b53e;animation:pulse 1s infinite;}
+.savestat.err .dot{background:#e25c5c;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ===== AI modal ===== */
+.modal-back{position:fixed;inset:0;background:rgba(8,8,12,.72);backdrop-filter:blur(4px);z-index:200;display:none;align-items:center;justify-content:center;padding:24px;}
+.modal-back.show{display:flex;}
+.modal{background:#15151c;border:1px solid #2c2c38;border-radius:16px;width:min(720px,100%);max-height:92vh;overflow-y:auto;box-shadow:0 30px 90px rgba(0,0,0,.6);}
+.modal-head{display:flex;align-items:center;gap:10px;padding:18px 22px;border-bottom:1px solid #23232b;position:sticky;top:0;background:#15151c;z-index:2;}
+.modal-head h2{margin:0;font-size:16px;color:#fff;flex:1;}
+.modal-head .x{background:#22222b;border:1px solid #34343f;color:#cfcfd6;border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:16px;line-height:1;}
+.modal-body{padding:20px 22px;}
+.modal-body .field{margin-bottom:16px;}
+.modal-body label{display:block;font-size:12px;color:#a7a7b2;margin-bottom:6px;font-weight:600;}
+.modal-body input[type=text],.modal-body input[type=password],.modal-body textarea{width:100%;background:#1b1b22;border:1px solid #34343f;border-radius:9px;color:#fff;padding:10px 12px;font-size:13.5px;font-family:inherit;box-sizing:border-box;resize:vertical;}
+.modal-body textarea{min-height:88px;line-height:1.5;}
+.modal-body .hint{font-size:11px;color:#71717e;margin-top:5px;line-height:1.5;}
+.modal-body .hint a{color:#9a8fe8;}
+.modelpick{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.modelpick button{background:#1b1b22;border:1px solid #34343f;color:#c4c4ce;border-radius:11px;padding:13px 12px;cursor:pointer;text-align:left;}
+.modelpick button.on{background:#221f33;border-color:#6C5CE7;color:#fff;}
+.modelpick button b{display:block;font-size:13.5px;margin-bottom:3px;}
+.modelpick button span{font-size:11px;color:#8a8a96;}
+.aibase{border:1px solid #2c2c38;border-radius:12px;overflow:hidden;max-height:230px;display:flex;justify-content:center;background:#0d0d12;}
+.aibase img{max-width:100%;max-height:230px;object-fit:contain;display:block;}
+.imgslots{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.imgslot{border:2px dashed #34343f;border-radius:12px;min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#7e7e8c;cursor:pointer;font-size:12px;padding:10px;position:relative;overflow:hidden;transition:.15s;}
+.imgslot:hover,.imgslot.over{border-color:#6C5CE7;color:#aaa;background:#16161d;}
+.imgslot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.imgslot .slotrm{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:7px;width:26px;height:26px;cursor:pointer;z-index:3;font-size:14px;}
+.imgslot .slottag{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.55);color:#fff;font-size:10.5px;padding:4px;z-index:2;}
+.modal-foot{display:flex;gap:10px;align-items:center;padding:16px 22px;border-top:1px solid #23232b;position:sticky;bottom:0;background:#15151c;}
+.modal-foot .grow{flex:1;}
+.aierr{color:#ff8a8a;font-size:12.5px;background:#2a1518;border:1px solid #4a2228;border-radius:9px;padding:10px 12px;margin-top:4px;white-space:pre-wrap;word-break:break-word;display:none;}
+.aierr.show{display:block;}
+.btn.accent{background:#6C5CE7;border-color:#6C5CE7;color:#fff;}
+.btn.accent:hover{background:#5a4bd6;}
+.btn.ghostbtn{background:transparent;border-color:#34343f;}
 </style>
 </head>
 <body>
@@ -201,6 +249,10 @@ input[type=range]{width:100%;accent-color:#6C5CE7;height:18px;cursor:pointer;}
     <span class="swatch">Texto <input type="color" id="cFg"></span>
     <span class="swatch">Respiro <input type="color" id="cCream"></span>
     <span class="grow"></span>
+    <span class="savestat" id="saveStat" title="As alterações são salvas automaticamente neste navegador"><span class="dot"></span><span id="saveStatTxt">Salvo</span></span>
+    <button class="btn ghostbtn" id="resetBtn" title="Recomeçar do template (apaga a sessão salva)"><svg class="uimi" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></svg></button>
+    <span class="sep"></span>
+    <button class="btn accent" id="aiBtn"><svg class="uimi" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9zM19 14l.9 2.1L22 17l-2.1.9L19 20l-.9-2.1L16 17l2.1-.9z"/></svg>Gerar Capa IA</button>
     <button class="btn primary" id="exportBtn"><svg class="uimi" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Exportar ZIP</button>
   </header>
   <div class="main">
@@ -211,6 +263,55 @@ input[type=range]{width:100%;accent-color:#6C5CE7;height:18px;cursor:pointer;}
 </div>
 <div class="toast" id="toast"></div>
 <div id="exportHost"></div>
+
+<div class="modal-back" id="aiModal">
+  <div class="modal">
+    <div class="modal-head">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6C5CE7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9zM19 14l.9 2.1L22 17l-2.1.9L19 20l-.9-2.1L16 17l2.1-.9z"/></svg>
+      <h2 id="aiTitle">Gerar capa com IA — Nano Banana</h2>
+      <button class="x" id="aiClose">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="field" id="aiBaseWrap" style="display:none">
+        <label>Imagem base (será editada)</label>
+        <div class="aibase"><img id="aiBaseImg" src="" alt=""></div>
+        <div class="hint">A IA vai manter esta imagem e aplicar só as mudanças que você descrever abaixo.</div>
+      </div>
+      <div class="field">
+        <label>Chave da API do Google Gemini</label>
+        <input type="password" id="aiKey" placeholder="AIza..." autocomplete="off">
+        <div class="hint">Salva só neste navegador. Pegue a sua em <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>. Não compartilhe o HTML com a chave dentro.</div>
+      </div>
+      <div class="field">
+        <label>Modelo</label>
+        <div class="modelpick" id="aiModelPick">
+          <button data-model="gemini-3-pro-image" class="on"><b>Nano Banana Pro</b><span>Melhor qualidade e leitura · mais caro</span></button>
+          <button data-model="gemini-2.5-flash-image"><b>Nano Banana (Flash)</b><span>Mais rápido e barato</span></button>
+        </div>
+      </div>
+      <div class="field">
+        <label id="aiSlotsLabel">Imagens de entrada (opcionais)</label>
+        <div class="imgslots">
+          <div class="imgslot" id="aiSlotRef" data-slot="ref"><div>📐<br>Referência de estilo<br><small style="opacity:.7">a capa a ser "relida"</small></div></div>
+          <div class="imgslot" id="aiSlotChar" data-slot="char"><div>🧑<br>Seu personagem / foto<br><small style="opacity:.7">opcional</small></div></div>
+        </div>
+        <div class="hint">A 1ª imagem é a referência que a IA vai analisar e recriar de forma diferente. A 2ª (opcional) é usada como personagem principal da capa.</div>
+      </div>
+      <div class="field">
+        <label style="display:flex;align-items:center;justify-content:space-between;gap:8px">Instruções (prompt)<button class="btn ghostbtn" id="aiPullText" style="padding:4px 9px;font-size:11px">↻ Puxar texto do 1º slide</button></label>
+        <textarea id="aiPrompt"></textarea>
+        <div class="hint">O texto do 1º slide já entra aqui automaticamente. Proporção da capa: <b id="aiAspect" style="color:#9a8fe8">4:5</b> (segue o formato do carrossel).</div>
+      </div>
+      <div class="aierr" id="aiErr"></div>
+    </div>
+    <div class="modal-foot">
+      <span class="hint" id="aiStatus" style="color:#8a8a96"></span>
+      <span class="grow"></span>
+      <button class="btn ghostbtn" id="aiCancel">Cancelar</button>
+      <button class="btn accent" id="aiGo"><svg class="uimi" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9z"/></svg><span id="aiGoLabel">Gerar capa</span></button>
+    </div>
+  </div>
+</div>
 <script id="deck-data" type="application/json"></script>
 <script>
 const KITS = {
@@ -232,6 +333,7 @@ const KITS = {
                     g:"Red+Hat+Display:wght@400;500;700;900&family=Red+Hat+Mono:wght@400;500;700"}
 };
 const FORMATS = {"4:5":[1080,1350],"retrato":[1080,1350],"1:1":[1080,1080],"quadrado":[1080,1080],"9:16":[1080,1920],"stories":[1080,1920],"reels":[1080,1920]};
+const ASPECT = {"4:5":"4:5","retrato":"4:5","1:1":"1:1","quadrado":"1:1","9:16":"9:16","stories":"9:16","reels":"9:16"};
 const FONT_OPTIONS = [
   ["Inter","Inter:wght@100..900"],["Anton","Anton"],["Space Grotesk","Space+Grotesk:wght@300..700"],
   ["Archivo","Archivo:wght@100..900"],["Manrope","Manrope:wght@200..800"],["Montserrat","Montserrat:wght@100..900"],
@@ -276,6 +378,17 @@ catch(e){ console.error('deck-data invalido, usando default',e); data = _default
 if(!data||!data.slides) data=_defaultData;
 let current = 0;
 const collapsed = {fx:false};
+
+/* ===== Persistência automática (IndexedDB) ===== */
+const DB_NAME='carrosselStudio', DB_STORE='kv', SESSION_KEY='session';
+function idbOpen(){return new Promise((res,rej)=>{let r;try{r=indexedDB.open(DB_NAME,1);}catch(e){return rej(e);}r.onupgradeneeded=()=>{try{r.result.createObjectStore(DB_STORE);}catch(e){}};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);});}
+function idbSet(k,v){return idbOpen().then(db=>new Promise((res,rej)=>{const tx=db.transaction(DB_STORE,'readwrite');tx.objectStore(DB_STORE).put(v,k);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);tx.onabort=()=>rej(tx.error);}));}
+function idbGet(k){return idbOpen().then(db=>new Promise((res,rej)=>{const tx=db.transaction(DB_STORE,'readonly');const rq=tx.objectStore(DB_STORE).get(k);rq.onsuccess=()=>res(rq.result);rq.onerror=()=>rej(rq.error);}));}
+function idbDel(k){return idbOpen().then(db=>new Promise((res,rej)=>{const tx=db.transaction(DB_STORE,'readwrite');tx.objectStore(DB_STORE).delete(k);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);}));}
+let _saveT=null, _saveReady=false;
+function setSaveStat(state,txt){const e2=document.getElementById('saveStat');if(!e2)return;e2.className='savestat'+(state?(' '+state):'');const t=document.getElementById('saveStatTxt');if(t)t.textContent=txt;}
+function saveNow(){return idbSet(SESSION_KEY,{data:data,current:current,v:1}).then(()=>setSaveStat('','Salvo')).catch(e=>{console.error('autosave falhou',e);setSaveStat('err','Erro ao salvar');});}
+function saveSoon(){if(!_saveReady)return;setSaveStat('saving','Salvando…');clearTimeout(_saveT);_saveT=setTimeout(saveNow,500);}
 const $ = s => document.querySelector(s);
 function esc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;');}
 function dims(){return FORMATS[data.formato]||FORMATS["4:5"];}
@@ -367,6 +480,7 @@ function cardColorField(insp,s,upd,def){
   cr.appendChild(ci);cr.appendChild(tx);insp.appendChild(cr);
 }
 function slideInner(s, idx, total){
+  if(s.tipo==='imagem') return '';
   const isCapa=s.tipo==='capa', isCta=s.tipo==='cta';
   const ghostHtml=s.ghost?`<div class="ghost">${esc(typeof s.ghost==='string'?s.ghost:String(idx+1).padStart(2,'0'))}</div>`:'';
   const shade='';
@@ -426,16 +540,41 @@ function renderMain(){
   const scale=Math.min((stage.clientWidth-60)/W,(stage.clientHeight-60)/H,1);
   wrap.style.width=W+'px';wrap.style.height=H+'px';wrap.style.transform='scale('+scale+')';
 }
+let dragFrom=null;
+function clearDropMarks(){document.querySelectorAll('.thumb.drop-before,.thumb.drop-after').forEach(x=>x.classList.remove('drop-before','drop-after'));}
+function moveSlide(from,to){
+  if(from==null||from<0||from>=data.slides.length)return;
+  const moved=data.slides.splice(from,1)[0];
+  if(from<to)to--;
+  to=Math.max(0,Math.min(to,data.slides.length));
+  data.slides.splice(to,0,moved);
+  current=to;renderAll();
+}
 function renderRail(){
   const [W,H]=dims();const total=data.slides.length;
   const rail=$('#rail');rail.innerHTML='';const ts=128/W;
   data.slides.forEach((s,i)=>{
-    const t=document.createElement('div');t.className='thumb'+(i===current?' active':'');
-    t.innerHTML=`<span class="tnum">${i+1}</span>`;
+    const t=document.createElement('div');t.className='thumb'+(i===current?' active':'');t.draggable=true;
+    t.innerHTML=`<span class="tnum">${i+1}</span><span class="draghandle"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>`;
     const sc=document.createElement('div');sc.className='scaler';sc.style.transform='scale('+ts+')';
     sc.appendChild(buildSlide(s,i,total));t.appendChild(sc);
-    t.onclick=()=>{current=i;renderAll();};rail.appendChild(t);
+    t.onclick=()=>{if(dragFrom!=null)return;current=i;renderAll();};
+    t.addEventListener('dragstart',e=>{dragFrom=i;t.classList.add('dragging');try{e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',String(i));}catch(err){}});
+    t.addEventListener('dragend',()=>{dragFrom=null;t.classList.remove('dragging');clearDropMarks();});
+    t.addEventListener('dragover',e=>{
+      if(dragFrom==null)return;e.preventDefault();try{e.dataTransfer.dropEffect='move';}catch(err){}
+      const r=t.getBoundingClientRect();const after=(e.clientY-r.top)>r.height/2;
+      clearDropMarks();if(i!==dragFrom)t.classList.add(after?'drop-after':'drop-before');
+    });
+    t.addEventListener('drop',e=>{
+      e.preventDefault();if(dragFrom==null)return;
+      const r=t.getBoundingClientRect();const after=(e.clientY-r.top)>r.height/2;
+      const to=i+(after?1:0);const from=dragFrom;dragFrom=null;clearDropMarks();
+      moveSlide(from,to);
+    });
+    rail.appendChild(t);
   });
+  saveSoon();
 }
 function el(tag,cls,html){const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e;}
 function field(label,val,oninput,hint,textarea){
@@ -630,20 +769,23 @@ function overlayGradient(style){
   }
 }
 const OVERLAY_OPTS=[['none','Nenhum'],['base','Base'],['topo','Topo escuro'],['baixo','Base escura'],['vinheta','Vinheta'],['solido','Sólido']];
+function svgPatternURI(svg){return 'url("data:image/svg+xml;utf8,'+encodeURIComponent(svg)+'")';}
 function patternStyle(name){
+  // SVG (em vez de CSS-gradient) p/ exportar certo no html2canvas
   switch(name){
-    case 'pontos': return ['radial-gradient(rgba(128,128,128,.30) 2px,transparent 2px)','28px 28px'];
-    case 'grade': return ['linear-gradient(rgba(128,128,128,.22) 1px,transparent 1px),linear-gradient(90deg,rgba(128,128,128,.22) 1px,transparent 1px)','42px 42px'];
-    case 'diagonais': return ['repeating-linear-gradient(45deg,rgba(128,128,128,.20) 0 2px,transparent 2px 16px)','auto'];
+    case 'pontos': return [svgPatternURI("<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28'><circle cx='2' cy='2' r='2' fill='rgba(128,128,128,0.30)'/></svg>"),'28px 28px'];
+    case 'grade': return [svgPatternURI("<svg xmlns='http://www.w3.org/2000/svg' width='42' height='42'><path d='M0 0H42M0 0V42' stroke='rgba(128,128,128,0.22)' stroke-width='1'/></svg>"),'42px 42px'];
+    case 'diagonais': return [svgPatternURI("<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><path d='M0 16L16 0M-4 4L4 -4M12 20L20 12' stroke='rgba(128,128,128,0.22)' stroke-width='2'/></svg>"),'16px 16px'];
     default: return null;
   }
 }
 const PATTERN_OPTS=[['none','Nenhum'],['pontos','Pontos'],['grade','Grade'],['diagonais','Linhas diagonais']];
 function decorate(e,s,idx,total){
+  if(s.tipo==='imagem') return;
   const g=ensureGlobal();
   const isCapa=s.tipo==='capa',isCta=s.tipo==='cta',isLast=idx===total-1;
   const ps=patternStyle(s.pattern);
-  if(ps){const p=document.createElement('div');p.className='cpattern';p.style.backgroundImage=ps[0];p.style.backgroundSize=ps[1];e.insertBefore(p,e.firstChild);}
+  if(ps){const p=document.createElement('div');p.className='cpattern';p.style.backgroundImage=ps[0];p.style.backgroundSize=ps[1];p.style.backgroundRepeat='repeat';e.insertBefore(p,e.firstChild);}
   const ostyle = s.overlayStyle || ((s.bg_uri||(data.infinite&&data.infiniteUri))?'base':'none');
   const grad=overlayGradient(ostyle);
   if(grad){const sh=document.createElement('div');sh.className='bgshade';sh.style.background=grad;sh.style.opacity=(s.overlayOpacity==null?100:s.overlayOpacity)/100;e.insertBefore(sh,e.firstChild);}
@@ -774,7 +916,7 @@ function renderInspector(){
   insp.appendChild(el('h3',null,`Slide ${current+1} de ${data.slides.length}`));
   insp.appendChild(el('span','typetag',esc(s.tipo)));
   const tsel=el('div','field');tsel.appendChild(el('label',null,'Tipo do slide'));
-  tsel.appendChild(selOf([['capa','Capa'],['passo','Passo'],['insight','Citação'],['lista','Lista'],['stat','Número / Stat'],['cta','CTA'],['tweet','Tweet / Post'],['nota','Nota / Aviso']],s.tipo,v=>{s.tipo=v;delete s.fx;renderMain();renderRail();renderInspector();}));
+  tsel.appendChild(selOf([['capa','Capa'],['passo','Passo'],['insight','Citação'],['lista','Lista'],['stat','Número / Stat'],['cta','CTA'],['tweet','Tweet / Post'],['nota','Nota / Aviso'],['imagem','Imagem / IA']],s.tipo,v=>{s.tipo=v;delete s.fx;renderMain();renderRail();renderInspector();}));
   insp.appendChild(tsel);
   const acts=el('div','seg');acts.style.gridTemplateColumns='1fr 1fr 1fr';
   const bAdd=el('button','btn','+ Slide');const bDup=el('button','btn','Duplicar');const bDel=el('button','btn','Remover');
@@ -785,6 +927,17 @@ function renderInspector(){
   insp.appendChild(el('div','divider'));
   const upd=()=>{renderMain();renderRail();};
   const set=k=>v=>{s[k]=v;upd();};
+  if(s.tipo==='imagem'){
+    insp.appendChild(el('p','muted','Slide de imagem pura — a capa gerada pela IA já vem com texto e elementos embutidos. Edite com IA, troque ou ajuste a imagem abaixo.'));
+    const edBtn=el('button','btn accent','<svg class="uimi" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>Editar esta capa com IA');
+    edBtn.style.width='100%';edBtn.disabled=!s.bg_uri;edBtn.onclick=()=>openAIModal('edit');insp.appendChild(edBtn);
+    const reBtn=el('button','btn ghostbtn','<svg class="uimi" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 4.6L18.5 9.5l-4.6 1.9L12 16l-1.9-4.6L5.5 9.5l4.6-1.9z"/></svg>Gerar outra capa (nova)');
+    reBtn.style.width='100%';reBtn.style.margin='6px 0';reBtn.onclick=()=>openAIModal('create');insp.appendChild(reBtn);
+    insp.appendChild(el('div','divider'));
+    bgPanel(insp,s);
+    fundoPanel(insp,s);
+    return;
+  }
   if(s.tipo==='capa'){
     insp.appendChild(field('Kicker (rótulo)',s.kicker,set('kicker')));
     insp.appendChild(field('Título',s.titulo,set('titulo'),'',true));
@@ -901,7 +1054,7 @@ $('#fileIn').addEventListener('change',e=>{
   const f=e.target.files[0];if(!f)return;const r=new FileReader();
   r.onload=ev=>{try{const j=JSON.parse(ev.target.result);if(!j.slides||!Array.isArray(j.slides))throw 0;
     data=j; if(!data.paleta)data.paleta={}; if(!data.kit)data.kit='editorial'; if(!data.formato)data.formato='4:5';
-    current=0; renderAll(); toast('Carrossel importado: '+data.slides.length+' slides');
+    current=0; aiPromptDirty=false; renderAll(); toast('Carrossel importado: '+data.slides.length+' slides');
   }catch(err){toast('JSON inválido — use um slides.json da habilidade');}};
   r.readAsText(f); e.target.value='';
 });
@@ -960,8 +1113,167 @@ $('#exportBtn').onclick=async function(){
   toast(fail?('Exportados '+ok+' de '+total+' (alguns falharam — veja o console)'):(useZip?('ZIP com '+ok+' PNGs ✓'):(ok+' PNGs exportados ✓')));
 };
 window.addEventListener('resize',renderMain);
-renderAll();
-setTimeout(renderMain,500);
+
+/* ===== Geração de capa com IA (Gemini · Nano Banana) ===== */
+const AI={model:'gemini-3-pro-image',ref:null,char:null,mode:'create',editIndex:0,lastMode:null};
+const AI_DEFAULT_PROMPT='Observe atentamente a imagem de referência e ABSORVA sua identidade visual: a paleta de cores, o estilo tipográfico (fontes, peso, caixa, tamanho dos títulos), a composição e o layout, o tratamento de imagem, texturas, elementos gráficos e o clima geral. Crie uma NOVA capa de carrossel para Instagram claramente inspirada nesse mesmo estilo — com a MESMA linguagem visual, cores e vibe — mas com composição própria e original. Deve ficar parecida e coerente com a referência, e NÃO ser uma cópia idêntica. Se houver uma segunda imagem, use a pessoa dela como personagem principal da capa, integrada de forma realista e bem iluminada, respeitando o estilo. Texto em português, alto contraste e legível.';
+function aiKeyGet(){try{return localStorage.getItem('gemini.apikey')||'';}catch(e){return '';}}
+function aiKeySet(v){try{localStorage.setItem('gemini.apikey',v);}catch(e){}}
+let aiPromptDirty=false;
+function slideMainText(s){
+  if(!s||s.tipo==='imagem')return '';
+  const f=SF[s.tipo]||SF.capa;
+  const parts=[];
+  if(s.kicker)parts.push('Rótulo: "'+String(s.kicker).trim()+'"');
+  const t=s[f.tkey];if(t)parts.push('Título: "'+String(t).trim()+'"');
+  const sub=f.skey?s[f.skey]:'';if(sub)parts.push('Subtítulo: "'+String(sub).trim()+'"');
+  if(s.tipo==='cta'&&s.acao)parts.push('Chamada: "'+String(s.acao).trim()+'"');
+  if(s.tipo==='lista'&&Array.isArray(s.itens)&&s.itens.length)parts.push('Itens: '+s.itens.map(x=>String(x).trim()).join('; '));
+  return parts.join(' · ');
+}
+function buildAIPrompt(){
+  const txt=slideMainText(data.slides&&data.slides[0]);
+  let p=AI_DEFAULT_PROMPT;
+  if(txt)p+='\n\nUse EXATAMENTE este texto do 1º slide na capa (mantenha as palavras, pode estilizar a tipografia): '+txt+'.';
+  return p;
+}
+function renderAISlots(){
+  const cfgs=[['ref','aiSlotRef','Referência','📐<br>Referência de estilo<br><small style="opacity:.7">a capa a ser “relida”</small>'],
+              ['char','aiSlotChar','Personagem','🧑<br>Seu personagem / foto<br><small style="opacity:.7">opcional</small>']];
+  cfgs.forEach(c=>{const slot=document.getElementById(c[1]);if(!slot)return;const uri=AI[c[0]];
+    if(uri){slot.innerHTML='<img src="'+uri+'"><button class="slotrm" title="Remover">×</button><span class="slottag">'+c[2]+'</span>';
+      slot.querySelector('.slotrm').onclick=e=>{e.stopPropagation();AI[c[0]]=null;renderAISlots();};}
+    else{slot.innerHTML='<div>'+c[3]+'</div>';}});
+}
+function aiReadInto(slot,file){if(!file)return;const r=new FileReader();r.onload=ev=>{AI[slot]=ev.target.result;renderAISlots();};r.readAsDataURL(file);}
+function aiPickInto(slot){const i=document.createElement('input');i.type='file';i.accept='image/*';i.onchange=e=>aiReadInto(slot,e.target.files[0]);i.click();}
+function openAIModal(mode){
+  AI.mode = (mode==='edit') ? 'edit' : 'create';
+  if(AI.mode==='edit') AI.editIndex=current;
+  if(AI.mode!==AI.lastMode) aiPromptDirty=false; // troca de modo => recarrega o prompt
+  AI.lastMode=AI.mode;
+  document.getElementById('aiKey').value=aiKeyGet();
+  document.getElementById('aiAspect').textContent=ASPECT[data.formato]||'4:5';
+  const isEdit=AI.mode==='edit';
+  document.getElementById('aiTitle').textContent = isEdit ? 'Editar capa com IA — Nano Banana' : 'Gerar capa com IA — Nano Banana';
+  document.getElementById('aiGoLabel').textContent = isEdit ? 'Aplicar edição' : 'Gerar capa';
+  document.getElementById('aiSlotsLabel').textContent = isEdit ? 'Adicionar elemento/pessoa (opcional)' : 'Imagens de entrada (opcionais)';
+  document.getElementById('aiSlotRef').style.display = isEdit ? 'none' : '';
+  const baseWrap=document.getElementById('aiBaseWrap');
+  if(isEdit){const s=data.slides[AI.editIndex];document.getElementById('aiBaseImg').src=(s&&s.bg_uri)||'';baseWrap.style.display='block';}
+  else{baseWrap.style.display='none';}
+  const pt=document.getElementById('aiPrompt');
+  if(!aiPromptDirty||!pt.value.trim()){
+    pt.value = isEdit ? '' : buildAIPrompt();
+  }
+  pt.placeholder = isEdit ? 'Descreva só o que mudar. Ex.: troque o boné por um chapéu preto; deixe o fundo mais escuro; remova a tatuagem; aumente o título…' : '';
+  document.getElementById('aiErr').classList.remove('show');
+  document.getElementById('aiStatus').textContent='';
+  document.getElementById('aiModelPick').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.getAttribute('data-model')===AI.model));
+  renderAISlots();
+  document.getElementById('aiModal').classList.add('show');
+}
+function closeAIModal(){document.getElementById('aiModal').classList.remove('show');}
+async function generateCover(){
+  const key=document.getElementById('aiKey').value.trim();
+  const errBox=document.getElementById('aiErr');
+  const status=document.getElementById('aiStatus');
+  const go=document.getElementById('aiGo');
+  errBox.classList.remove('show');
+  if(!key){errBox.textContent='Informe sua chave da API do Gemini.';errBox.classList.add('show');return;}
+  aiKeySet(key);
+  const isEdit=AI.mode==='edit';
+  const userText=document.getElementById('aiPrompt').value.trim();
+  let prompt;
+  if(isEdit){
+    if(!userText){errBox.textContent='Descreva a alteração que deseja fazer na imagem.';errBox.classList.add('show');return;}
+    prompt='Edite a imagem fornecida mantendo o máximo possível igual (composição, enquadramento, cores, personagem, tipografia e textos existentes). Altere APENAS o seguinte, de forma natural e bem integrada: '+userText+'. Não recrie a imagem do zero.';
+  }else{
+    prompt=userText||AI_DEFAULT_PROMPT;
+  }
+  const ar=ASPECT[data.formato]||'4:5';
+  const candidates=AI.model==='gemini-2.5-flash-image'
+    ? ['gemini-2.5-flash-image','gemini-2.5-flash-image-preview']
+    : ['gemini-3-pro-image','gemini-3-pro-image-preview'];
+  const parts=[{text:prompt}];
+  const pushImg=uri=>{if(!uri)return;const m=/^data:([^;]+);base64,(.*)$/.exec(uri);if(m)parts.push({inline_data:{mime_type:m[1],data:m[2]}});};
+  if(isEdit){const bs=data.slides[AI.editIndex];pushImg(bs&&bs.bg_uri);pushImg(AI.char);}
+  else{pushImg(AI.ref);pushImg(AI.char);}
+  const body={contents:[{parts:parts}],generationConfig:{responseModalities:['TEXT','IMAGE'],imageConfig:{aspectRatio:ar}}};
+  go.disabled=true;status.textContent='Gerando… pode levar alguns segundos.';
+  try{
+    let res=null,j=null,lastErr='';
+    for(const model of candidates){
+      res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent?key='+encodeURIComponent(key),
+        {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+      j=null;try{j=await res.json();}catch(e){}
+      if(res.ok)break;
+      lastErr=(j&&j.error&&j.error.message)||('Erro HTTP '+res.status);
+      if(res.status!==404)break; // só tenta o ID alternativo quando o modelo não existe
+    }
+    if(!res||!res.ok)throw new Error(lastErr||'Falha desconhecida');
+    const cand=j&&j.candidates&&j.candidates[0];
+    const ps=(cand&&cand.content&&cand.content.parts)||[];
+    let inl=null;for(const p of ps){if(p.inline_data||p.inlineData){inl=p.inline_data||p.inlineData;break;}}
+    if(!inl){const fr=(cand&&cand.finishReason)||'';throw new Error('A IA não retornou imagem.'+(fr?(' Motivo: '+fr+'.'):'')+' Tente ajustar o prompt ou as imagens.');}
+    const uri='data:'+(inl.mime_type||inl.mimeType||'image/png')+';base64,'+inl.data;
+    if(isEdit){
+      const bs=data.slides[AI.editIndex]||data.slides[current];
+      bs.bg_uri=uri;if(bs.tipo!=='imagem')bs.tipo='imagem';
+      bs.bgPosX=50;bs.bgPosY=50;bs.bgZoom=100;bs.bgOpacity=100;bs.overlayStyle='none';delete bs.bgFlip;
+      current=AI.editIndex;
+      closeAIModal();renderAll();saveSoon();toast('Capa editada ✓');
+    }else{
+      const ns={tipo:'imagem',bg_uri:uri,bgPosX:50,bgPosY:50,bgZoom:100,bgOpacity:100,overlayStyle:'none'};
+      data.slides.splice(current+1,0,ns);current=current+1;
+      closeAIModal();renderAll();saveSoon();toast('Capa gerada ✓ — novo slide '+(current+1));
+    }
+  }catch(err){
+    errBox.textContent='Falha ao gerar: '+(err&&err.message?err.message:String(err));errBox.classList.add('show');
+  }finally{go.disabled=false;status.textContent='';}
+}
+document.getElementById('aiBtn').onclick=()=>openAIModal('create');
+document.getElementById('aiClose').onclick=closeAIModal;
+document.getElementById('aiCancel').onclick=closeAIModal;
+document.getElementById('aiGo').onclick=generateCover;
+document.getElementById('aiModal').addEventListener('click',e=>{if(e.target.id==='aiModal')closeAIModal();});
+document.getElementById('aiKey').addEventListener('change',e=>aiKeySet(e.target.value.trim()));
+document.getElementById('aiPrompt').addEventListener('input',()=>{aiPromptDirty=true;});
+document.getElementById('aiPullText').onclick=e=>{e.preventDefault();aiPromptDirty=false;document.getElementById('aiPrompt').value=buildAIPrompt();};
+document.getElementById('aiModelPick').querySelectorAll('button').forEach(b=>{b.onclick=()=>{AI.model=b.getAttribute('data-model');document.getElementById('aiModelPick').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));};});
+[['ref','aiSlotRef'],['char','aiSlotChar']].forEach(c=>{const elx=document.getElementById(c[1]);
+  elx.addEventListener('click',()=>aiPickInto(c[0]));
+  elx.addEventListener('dragover',e=>{e.preventDefault();elx.classList.add('over');});
+  elx.addEventListener('dragleave',()=>elx.classList.remove('over'));
+  elx.addEventListener('drop',e=>{e.preventDefault();elx.classList.remove('over');aiReadInto(c[0],e.dataTransfer.files[0]);});});
+
+/* ===== Recomeçar do template ===== */
+document.getElementById('resetBtn').onclick=()=>{
+  if(!confirm('Recomeçar do template? Isto apaga a sessão salva neste navegador. JSONs já exportados não são afetados.'))return;
+  idbDel(SESSION_KEY).catch(()=>{}).then(()=>{
+    try{data=(_dn&&_dn.textContent.trim())?JSON.parse(_dn.textContent):JSON.parse(JSON.stringify(_defaultData));}catch(e){data=JSON.parse(JSON.stringify(_defaultData));}
+    if(!data||!data.slides)data=JSON.parse(JSON.stringify(_defaultData));
+    if(!data.paleta)data.paleta={};if(!data.kit)data.kit='editorial';if(!data.formato)data.formato='4:5';
+    current=0;aiPromptDirty=false;renderAll();saveSoon();toast('Recomeçado do template');
+  });
+};
+
+/* ===== Boot: restaura sessão salva e liga o autosave ===== */
+(async function boot(){
+  try{
+    const saved=await idbGet(SESSION_KEY);
+    if(saved&&saved.data&&Array.isArray(saved.data.slides)&&saved.data.slides.length){
+      data=saved.data;
+      current=Math.min(saved.current||0,data.slides.length-1);
+      if(!data.paleta)data.paleta={};if(!data.kit)data.kit='editorial';if(!data.formato)data.formato='4:5';
+      setTimeout(()=>toast('Sessão restaurada · '+data.slides.length+' slides'),300);
+    }
+  }catch(e){console.warn('sem sessão restaurável',e);}
+  renderAll();
+  _saveReady=true;
+  saveNow();
+  setTimeout(renderMain,500);
+})();
 </script>
 </body>
 </html>
