@@ -378,16 +378,22 @@ catch(e){ console.error('deck-data invalido, usando default',e); data = _default
 if(!data||!data.slides) data=_defaultData;
 let current = 0;
 const collapsed = {fx:false};
+// Assinatura do deck injetado: distingue carrossel NOVO (recém-gerado) de sessão salva antiga.
+function _hash(str){let h=5381;for(let i=0;i<str.length;i++){h=((h<<5)+h)^str.charCodeAt(i);}return (h>>>0).toString(36);}
+const _deckRaw=(_dn&&_dn.textContent.trim())||'';
+const DECK_SIG=_deckRaw?('d'+_deckRaw.length+'_'+_hash(_deckRaw)):'__default__';
 
 /* ===== Persistência automática (IndexedDB) ===== */
 const DB_NAME='carrosselStudio', DB_STORE='kv', SESSION_KEY='session';
+// Sessão por carrossel: cada carrossel guarda as próprias edições e não mistura com outro.
+const SK='session_'+DECK_SIG;
 function idbOpen(){return new Promise((res,rej)=>{let r;try{r=indexedDB.open(DB_NAME,1);}catch(e){return rej(e);}r.onupgradeneeded=()=>{try{r.result.createObjectStore(DB_STORE);}catch(e){}};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);});}
 function idbSet(k,v){return idbOpen().then(db=>new Promise((res,rej)=>{const tx=db.transaction(DB_STORE,'readwrite');tx.objectStore(DB_STORE).put(v,k);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);tx.onabort=()=>rej(tx.error);}));}
 function idbGet(k){return idbOpen().then(db=>new Promise((res,rej)=>{const tx=db.transaction(DB_STORE,'readonly');const rq=tx.objectStore(DB_STORE).get(k);rq.onsuccess=()=>res(rq.result);rq.onerror=()=>rej(rq.error);}));}
 function idbDel(k){return idbOpen().then(db=>new Promise((res,rej)=>{const tx=db.transaction(DB_STORE,'readwrite');tx.objectStore(DB_STORE).delete(k);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);}));}
 let _saveT=null, _saveReady=false;
 function setSaveStat(state,txt){const e2=document.getElementById('saveStat');if(!e2)return;e2.className='savestat'+(state?(' '+state):'');const t=document.getElementById('saveStatTxt');if(t)t.textContent=txt;}
-function saveNow(){return idbSet(SESSION_KEY,{data:data,current:current,v:1}).then(()=>setSaveStat('','Salvo')).catch(e=>{console.error('autosave falhou',e);setSaveStat('err','Erro ao salvar');});}
+function saveNow(){return idbSet(SK,{data:data,current:current,sig:DECK_SIG,v:2}).then(()=>setSaveStat('','Salvo')).catch(e=>{console.error('autosave falhou',e);setSaveStat('err','Erro ao salvar');});}
 function saveSoon(){if(!_saveReady)return;setSaveStat('saving','Salvando…');clearTimeout(_saveT);_saveT=setTimeout(saveNow,500);}
 const $ = s => document.querySelector(s);
 function esc(t){return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;');}
@@ -991,7 +997,7 @@ function renderInspector(){
   }
   capaStylePanel(insp,s,upd);
   wordHighlightPanel(insp,s,upd);
-  if(s.tipo!=='cta'){
+  {
     insp.appendChild(chk('Mostrar número/texto gigante de fundo', !!s.ghost, v=>{s.ghost=v?String(current+1).padStart(2,'0'):undefined;upd();renderInspector();}));
     if(s.ghost){
       insp.appendChild(field('Número/texto gigante (fundo)', typeof s.ghost==='string'?s.ghost:String(current+1).padStart(2,'0'), v=>{s.ghost=v;renderMain();renderRail();}, 'Ex.: 03, N2, NEW — edite pra não repetir ao duplicar.'));
@@ -1250,7 +1256,7 @@ document.getElementById('aiModelPick').querySelectorAll('button').forEach(b=>{b.
 /* ===== Recomeçar do template ===== */
 document.getElementById('resetBtn').onclick=()=>{
   if(!confirm('Recomeçar do template? Isto apaga a sessão salva neste navegador. JSONs já exportados não são afetados.'))return;
-  idbDel(SESSION_KEY).catch(()=>{}).then(()=>{
+  idbDel(SK).catch(()=>{}).then(()=>{
     try{data=(_dn&&_dn.textContent.trim())?JSON.parse(_dn.textContent):JSON.parse(JSON.stringify(_defaultData));}catch(e){data=JSON.parse(JSON.stringify(_defaultData));}
     if(!data||!data.slides)data=JSON.parse(JSON.stringify(_defaultData));
     if(!data.paleta)data.paleta={};if(!data.kit)data.kit='editorial';if(!data.formato)data.formato='4:5';
@@ -1261,12 +1267,16 @@ document.getElementById('resetBtn').onclick=()=>{
 /* ===== Boot: restaura sessão salva e liga o autosave ===== */
 (async function boot(){
   try{
-    const saved=await idbGet(SESSION_KEY);
-    if(saved&&saved.data&&Array.isArray(saved.data.slides)&&saved.data.slides.length){
+    const saved=await idbGet(SK);
+    const savedOk = saved && saved.data && Array.isArray(saved.data.slides) && saved.data.slides.length;
+    // Só restaura se for O MESMO carrossel (mesma assinatura). Carrossel NOVO => carrega o novo.
+    if(savedOk && saved.sig===DECK_SIG){
       data=saved.data;
       current=Math.min(saved.current||0,data.slides.length-1);
       if(!data.paleta)data.paleta={};if(!data.kit)data.kit='editorial';if(!data.formato)data.formato='4:5';
-      setTimeout(()=>toast('Sessão restaurada · '+data.slides.length+' slides'),300);
+      setTimeout(()=>toast('Suas edições foram restauradas · '+data.slides.length+' slides'),300);
+    } else if(savedOk){
+      setTimeout(()=>toast('Novo carrossel carregado · '+data.slides.length+' slides'),300);
     }
   }catch(e){console.warn('sem sessão restaurável',e);}
   renderAll();
