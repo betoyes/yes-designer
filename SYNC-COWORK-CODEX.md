@@ -12,6 +12,7 @@ references, versão) DEVE ser aplicada e publicada nas DUAS.
 
 2. **OpenAI Codex** (CLI / IDE / app) — mesmo padrão de skills (agentskills.io).
    - Manifesto: `plugins/carrossel-pro/.codex-plugin/plugin.json`
+   - **Catálogo de marketplace (Git):** `.agents/plugins/marketplace.json` na RAIZ do repo (aponta `./plugins/carrossel-pro`). Sem ele o Codex recusa com "marketplace root does not contain a supported manifest".
    - Uso local: copiar `plugins/carrossel-pro/skills/carrossel-pro/` para `~/.codex/skills/carrossel-pro/`.
    - Como plugin: publicar/adicionar o repo via `/plugins` (marketplace Git).
 
