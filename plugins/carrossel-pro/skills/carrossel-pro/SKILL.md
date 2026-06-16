@@ -111,6 +111,8 @@ Você NÃO depende de scripts pra renderizar: a entrega é o **Carousel Studio**
 
 > REGRA: sempre entregue o `carrossel-editor.html`. É a entrega principal — é o que replica a experiência completa pra qualquer usuário.
 
+> ENTREGA por plataforma: no **Claude Cowork** o `carrossel-editor.html` é apresentado direto no chat (card de arquivo). No **Codex (CLI/IDE/app)** salve o `carrossel-editor.html` no diretório de trabalho atual e informe o caminho pra pessoa abrir no navegador. O conteúdo do arquivo é idêntico nos dois.
+
 ### FASE 9 — Legenda + entrega
 Escreva a legenda com um dos templates de `references/03-voz-e-tom.md`, na voz do usuário. Entregue o pacote: **carrossel-editor.html** (editor populado) + legenda + sistema visual salvo. Os PNGs a pessoa exporta pelo botão **Exportar ZIP** dentro do editor.
 
@@ -164,6 +166,4 @@ Se a pergunta não estiver na base, use conhecimento geral, mas sinalize "(não 
 
 ## Escopo
 
-**Cobre:** carrosséis pra qualquer marca; sistema visual do zero (tipografia, paleta, layout, voz); fluxo ponta a ponta; HTML standalone offline; PNGs retina + legenda + sistema reaproveitável.
-
-**Fora:** Reels/vídeo; imagens fotorrealistas por IA; editar carrosséis já publicados (sempre do zero); design de logo (recomenda, não produz); estratégia de marketing completa (foca no carrossel).
+**Cobre:** carrosséis pra qualquer marca; sistema visual do zero (tipografia, paleta, la
