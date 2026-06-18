@@ -1,6 +1,6 @@
-# Carrossel Pro
+# Yes Corrossel-v1
 
-Marketplace de plugin pro **Claude Cowork / Claude Code**. Instala a habilidade **carrossel-pro**, que cria carrosseis de Instagram prontos pra publicar e entrega um **editor visual** (Carousel Studio) ja preenchido com o carrossel gerado — pra ajustar textos, tipografia, cores, imagem de fundo, cantos e exportar os PNGs em ZIP.
+Marketplace de plugin pro **Claude Cowork / Claude Code**. Instala a habilidade **yes-corrossel-v1**, que cria carrosseis de Instagram prontos pra publicar e entrega um **editor visual** (Carousel Studio) ja preenchido com o carrossel gerado — pra ajustar textos, tipografia, cores, imagem de fundo, cantos e exportar os PNGs em ZIP.
 
 ---
 
@@ -8,13 +8,13 @@ Marketplace de plugin pro **Claude Cowork / Claude Code**. Instala a habilidade 
 
 ### Claude Cowork (app desktop)
 1. Configuracoes -> Plugins -> **Adicionar marketplace**.
-2. Fonte **GitHub** -> informe: `NetoNetoArreche/carrossel-pro-marketplace`
-3. Instale o plugin **carrossel-pro** no catalogo.
+2. Fonte **GitHub** -> informe: `betoyes/yes-designer`
+3. Instale o plugin **yes-corrossel-v1** no catalogo.
 
 ### Claude Code (terminal)
 ```bash
-/plugin marketplace add NetoNetoArreche/carrossel-pro-marketplace
-/plugin install carrossel-pro@carrossel-pro-marketplace
+/plugin marketplace add betoyes/yes-designer
+/plugin install yes-corrossel-v1@yes-designer
 ```
 
 ## Usar
@@ -38,7 +38,7 @@ O script atualiza a versao no `plugin.json` e no `marketplace.json`, faz commit 
 ## Estrutura
 
 ```
-carrossel-pro-marketplace/
+yes-designer/
 ├── .claude-plugin/marketplace.json   # catalogo
 ├── plugins/carrossel-pro/            # o plugin (habilidade + editor)
 ├── atualizar.sh                      # sobe versao e publica

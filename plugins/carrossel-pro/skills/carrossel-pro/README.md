@@ -1,4 +1,4 @@
-# CARROSSEL PRO
+# YES CORROSSEL-V1
 
 Diretor de arte + redator que produz carrosséis de Instagram prontos pra publicar, construindo do zero o sistema visual da sua marca. Em português do Brasil, **100% autônomo** — sem depender de nenhum conector externo.
 
@@ -16,11 +16,11 @@ Diretor de arte + redator que produz carrosséis de Instagram prontos pra public
 Diga algo como:
 - "Quero fazer um carrossel de Instagram pra minha marca"
 - "Me ajuda com slides pra IG sobre [tema]"
-- "Usa a skill carrossel-pro pra criar um carrossel sobre [tema]"
+- "Usa a skill yes-corrossel-v1 pra criar um carrossel sobre [tema]"
 
 ## Estrutura
 ```
-carrossel-pro/
+yes-corrossel-v1/
 ├── SKILL.md
 ├── references/        # base de conhecimento (marca, kits, voz, frameworks, técnico, workflow)
 └── assets/

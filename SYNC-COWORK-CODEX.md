@@ -1,6 +1,6 @@
 # ⚠️ REGRA DE MANUTENÇÃO — DOIS ALVOS SEMPRE EM SINCRONIA
 
-Este plugin **Carrossel Pro** roda em DUAS plataformas. Toda alteração (editor, SKILL.md,
+Este plugin **Yes Corrossel-v1** roda em DUAS plataformas. Toda alteração (editor, SKILL.md,
 references, versão) DEVE ser aplicada e publicada nas DUAS.
 
 ## Os dois alvos
@@ -13,7 +13,7 @@ references, versão) DEVE ser aplicada e publicada nas DUAS.
 2. **OpenAI Codex** (CLI / IDE / app) — mesmo padrão de skills (agentskills.io).
    - Manifesto: `plugins/carrossel-pro/.codex-plugin/plugin.json`
    - **Catálogo de marketplace (Git):** `.agents/plugins/marketplace.json` na RAIZ do repo (aponta `./plugins/carrossel-pro`). Sem ele o Codex recusa com "marketplace root does not contain a supported manifest".
-   - Uso local: copiar `plugins/carrossel-pro/skills/carrossel-pro/` para `~/.codex/skills/carrossel-pro/`.
+   - Uso local: copiar `plugins/carrossel-pro/skills/carrossel-pro/` para `~/.codex/skills/yes-corrossel-v1/`.
    - Como plugin: publicar/adicionar o repo via `/plugins` (marketplace Git).
 
 ## Fonte única (não duplicar conteúdo)
@@ -33,7 +33,7 @@ A MESMA pasta `plugins/carrossel-pro/` serve os dois — ela tem os DOIS manifes
    (e em `.claude-plugin/marketplace.json`). Mantenha os números iguais.
 4. Commit + push no repo GitHub (vale para Cowork e Codex).
 5. Regera os deliverables Codex (zips) se for distribuir fora do GitHub:
-   - `carrossel-pro-codex-skill.zip`  (pasta da skill p/ ~/.codex/skills)
-   - `carrossel-pro-codex-plugin.zip` (plugin completo c/ .codex-plugin)
+   - `yes-corrossel-v1-codex-skill.zip`  (pasta da skill p/ ~/.codex/skills)
+   - `yes-corrossel-v1-codex-plugin.zip` (plugin completo c/ .codex-plugin)
 
 ## Versão atual: 1.9.2  (editor com IA Gemini, autosave por carrossel, nº gigante em todos os slides)

@@ -1,11 +1,11 @@
 {
-  "name": "carrossel-pro-marketplace",
+  "name": "yes-designer",
   "interface": {
-    "displayName": "Carrossel Pro"
+    "displayName": "Yes Corrossel-v1"
   },
   "plugins": [
     {
-      "name": "carrossel-pro",
+      "name": "yes-corrossel-v1",
       "source": {
         "source": "local",
         "path": "./plugins/carrossel-pro"

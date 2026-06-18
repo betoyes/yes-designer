@@ -1,19 +1,19 @@
 {
-  "name": "carrossel-pro-marketplace",
+  "name": "yes-designer",
   "owner": {
-    "name": "Helio Arreche",
-    "email": "helioarreche@gmail.com"
+    "name": "Beto Yes",
+    "email": "betoyes@gmail.com"
   },
   "plugins": [
     {
-      "name": "carrossel-pro",
+      "name": "yes-corrossel-v1",
       "source": "./plugins/carrossel-pro",
       "description": "Cria carrosseis de Instagram prontos pra publicar e entrega um editor visual (Carousel Studio) ja populado: tipografia, destaque de palavra, imagem de fundo, sombra/overlay, cantos editaveis, logo e exportacao em ZIP.",
       "version": "1.9.2",
       "author": {
-        "name": "Helio Arreche"
+        "name": "Beto Yes"
       },
-      "homepage": "https://github.com/NetoNetoArreche/carrossel-pro-marketplace",
+      "homepage": "https://github.com/betoyes/yes-designer",
       "license": "MIT",
       "keywords": [
         "instagram",
